@@ -1,0 +1,39 @@
+name: CI
+on: 
+  push:
+    branches:
+      - master
+jobs:
+  lhci:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: npm install, build
+        run: |
+          npm install
+          npm run build
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.12.x
+          lhci autorun --config .lighthouserc.cjs
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      # For all lhr-*.json files, average the scores for each category
+      - name: Extract Lighthouse scores and update README badges
+        run: |
+          jq -rs '[[.[] | .categories | to_entries | .[] | .value=(.value.score * 100)] |  reduce .[] as $dot ({}; .[$dot.key] += [$dot.value]) | to_entries | .[] | .value=(.value | add/length)] | map("sed -i -E s~\\!\\\\\\[lighthouse-\(.key)\\\\]\\([^\\)]\\*[\\)]\\)~\\!\\[lighthouse-\(.key)\\]\\(https://img.shields.io/badge/\(.key | split ("-") | map((.[0:1]|ascii_upcase)+(if . | length <= 3 then .[1:] | ascii_upcase else .[1:] end )) | join("_"))-\(.value|floor)-\(if .value > 90 then "lime" elif .value > 80 then "green" elif .value > 70 then "yellow" elif .value > 60 then "orange" elif .value > 50 then "red" else "maroon" end)\\?logo=lighthouse\\)~ README.md") | .[]' .lighthouseci/lhr-*.json
+          jq -rs '[[.[] | .categories | to_entries | .[] | .value=(.value.score * 100)] |  reduce .[] as $dot ({}; .[$dot.key] += [$dot.value]) | to_entries | .[] | .value=(.value | add/length)] | map("sed -i -E s~\\!\\\\\\[lighthouse-\(.key)\\\\]\\([^\\)]\\*[\\)]\\)~\\!\\[lighthouse-\(.key)\\]\\(https://img.shields.io/badge/\(.key | split ("-") | map((.[0:1]|ascii_upcase)+(if . | length <= 3 then .[1:] | ascii_upcase else .[1:] end )) | join("_"))-\(.value|floor)-\(if .value > 90 then "lime" elif .value > 80 then "green" elif .value > 70 then "yellow" elif .value > 60 then "orange" elif .value > 50 then "red" else "maroon" end)\\?logo=lighthouse\\)~ README.md") | .[]' .lighthouseci/lhr-*.json | bash
+      - name: Commit changes to README
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add README.md
+          if git diff-index --quiet HEAD; then
+            git commit -m "[action] - Update README.md with Lighthouse scores"
+            git push
+          fi

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.link-button {
+		@apply flex items-center space-x-2 shadow-box-inner bg-primary-light dark:bg-primary-dark/10 transition-colors duration-500 rounded-lg p-4 shadow-accent;
+	}
+
+	.link-button svg {
+		@apply w-8 h-8 flex-shrink-0;
+	}
+
+	.link-button p {
+		@apply text-2xl font-bold;
+	}
+
+	.text-glow {
+		text-shadow: #456bd5 0 0 10px;
+	}
+}
