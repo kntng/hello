@@ -36,7 +36,7 @@ jobs:
       - name: Take screenshot with puppeteer
         run: |
           echo 'import puppeteer from "puppeteer";
-                const browser = await puppeteer.launch();
+                const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
                 const page = await browser.newPage();
                 await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 1, });
                 await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
