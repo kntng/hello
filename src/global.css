@@ -1,21 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Work Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-accent: oklch(0.56 0.1685 266.2);
+  --color-primary-light: var(--color-neutral-100);
+  --color-primary-dark: var(--color-slate-900);
+}
 
 @layer components {
-	.link-button {
-		@apply flex items-center space-x-2 shadow-box-inner bg-primary-light dark:bg-primary-dark/10 transition-colors duration-500 rounded-lg p-4 shadow-accent;
-	}
+  .recessed {
+    @apply inset-ring-accent inset-shadow-accent inset-shadow-xs inset-ring-2;
+  }
 
-	.link-button svg {
-		@apply w-8 h-8 flex-shrink-0;
-	}
+  .link-button {
+    @apply bg-primary-light dark:bg-primary-dark/10 flex items-center space-x-2 rounded-lg p-4 transition-colors duration-500;
+  }
 
-	.link-button p {
-		@apply text-2xl font-bold;
-	}
+  .link-button svg {
+    @apply h-8 w-8 flex-shrink-0;
+  }
 
-	.text-glow {
-		text-shadow: #456bd5 0 0 10px;
-	}
+  .link-button p {
+    @apply text-2xl font-bold;
+  }
+
+  .text-glow {
+    @apply text-shadow-accent text-shadow-md;
+  }
 }
