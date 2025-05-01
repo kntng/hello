@@ -34,6 +34,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git add README.md
           if git diff-index --quiet HEAD; then
-            git commit -m "[action] - Update README.md with Lighthouse scores"
-            git push
+            git commit -m "[action] - Update README.md with Lighthouse scores" || echo "Nothing to commit"
+            git push || echo "Nothing to push"
           fi
