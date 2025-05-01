@@ -35,14 +35,15 @@ jobs:
           done
       - name: Take screenshot with puppeteer
         run: |
-          bun run --silent <<'EOF'
-          import puppeteer from "puppeteer";
-          const browser = await puppeteer.launch();
-          const page = await browser.newPage();
-          await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
-          await page.screenshot({ path: "screenshot.png", fullPage: true });
-          await browser.close();
-          EOF
+          echo 'import puppeteer from "puppeteer";
+                const browser = await puppeteer.launch();
+                const page = await browser.newPage();
+                await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 1, });
+                await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
+                await page.screenshot({ path: "screenshot.png", fullPage: true });
+                await browser.close();' | bun -
+      - name: Check screenshot
+        run: ls -la
       - name: Commit screenshot
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
