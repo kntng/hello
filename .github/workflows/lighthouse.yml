@@ -1,25 +1,25 @@
-name: CI
+name: Run Lighthouse CI on main push
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   lhci:
-    name: Lighthouse
+    name: Run Lighthouse CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 16.x
-      - name: npm install, build
+          bun-version: latest
+      - name: bun install, build
         run: |
-          npm install
-          npm run build
+          bun install
+          bun run build
       - name: Run Lighthouse CI
         run: |
-          npm install -g @lhci/cli@0.12.x
+          bun install -g @lhci/cli@0.14
           lhci autorun --config .lighthouserc.cjs
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

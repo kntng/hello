@@ -1,0 +1,52 @@
+name: Screenshot landing page on main push
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - screenshot.png
+
+jobs:
+  screenshot:
+    name: Screenshot landing page
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: bun install, build
+        run: |
+          bun install
+          bun run build
+      - name: Install puppeteer
+        run: bun add puppeteer
+      - name: bun preview and screenshot
+        run: |
+          bun preview --port 3000 &
+        shell: bash
+      - name: Wait for preview
+        run: |
+          for i in {1..10}; do
+            curl --silent --head http://localhost:3000 && break
+            echo "Waiting for preview server..."
+            sleep 1
+          done
+      - name: Take screenshot with puppeteer
+        run: |
+          bun run --silent <<'EOF'
+          import puppeteer from "puppeteer";
+          const browser = await puppeteer.launch();
+          const page = await browser.newPage();
+          await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
+          await page.screenshot({ path: "screenshot.png", fullPage: true });
+          await browser.close();
+          EOF
+      - name: Commit screenshot
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add screenshot.png
+          git commit -m "[action] - Update screenshot.png"
+          git push
