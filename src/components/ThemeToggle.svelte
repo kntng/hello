@@ -12,34 +12,36 @@
 </script>
 
 <div
-  class="bg-primary-light dark:bg-primary-dark recessed flex h-12 w-28 rounded-full p-2 transition-colors duration-300 motion-reduce:transform-none"
+  class="bg-background dark:bg-foreground shadow-solid flex h-12 w-28 rounded-full p-2 transition-colors duration-300 motion-reduce:transform-none"
 >
   <div class="z-10 grid h-full w-full grid-cols-3">
     <button
       on:click={() => mode.set(true)}
-      class="h-8 w-8 rounded-full"
+      class="h-8 w-8 rounded-full p-1"
       aria-label="Light Theme"
-    ></button>
+    >
+      <Sun class="dark:text-background text-foreground stroke-2" />
+    </button>
     <button
       on:click={() => mode.set(null)}
-      class="h-8 w-8 rounded-full"
+      class="h-8 w-8 rounded-full p-1"
       aria-label="System Theme"
-    ></button>
+    >
+      <Cog class="dark:text-background text-foreground stroke-[1.5px]" />
+    </button>
     <button
       on:click={() => mode.set(false)}
-      class="h-8 w-8 rounded-full"
+      class="h-8 w-8 rounded-full p-1.5"
       aria-label="Dark Theme"
-    ></button>
+    >
+      <Moon class="dark:text-background text-foreground stroke-2" />
+    </button>
   </div>
-  <span
-    class={`absolute ${localMode === null ? 'translate-x-8 p-1' : 'translate-x-0 p-1 dark:translate-x-16 dark:p-1.5'} bg-accent shadow-box-sm shadow-accent h-8 w-8 rounded-full transition-transform duration-300 motion-reduce:transform-none`}
+  <div
+    class={`absolute ${localMode === null ? 'translate-x-8' : 'translate-x-0 dark:translate-x-16'} inline-flex h-8 w-8 rounded-full transition-transform duration-300 motion-reduce:transform-none`}
   >
-    {#if localMode === null}
-      <Cog class="dark:text-primary-dark text-primary-light stroke-[1.5px]" />
-    {:else if localMode}
-      <Sun class="text-primary-light stroke-2" />
-    {:else}
-      <Moon class="text-primary-dark stroke-2" />
-    {/if}
-  </span>
+    <span
+      class="bg-secondary dark:bg-primary shadow-solid-sm h-full w-full rounded-full transition-colors duration-300"
+    ></span>
+  </div>
 </div>
