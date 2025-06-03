@@ -12,7 +12,7 @@
 </script>
 
 <div
-  class="bg-background dark:bg-foreground shadow-solid flex h-12 w-28 rounded-full p-2 transition-colors duration-300 motion-reduce:transform-none"
+  class="bg-background dark:bg-foreground shadow-solid flex h-12 w-28 rounded-full p-2 shadow-black transition-colors duration-300 motion-reduce:transform-none"
 >
   <div class="z-10 grid h-full w-full grid-cols-3">
     <button
@@ -41,7 +41,7 @@
     class={`absolute ${localMode === null ? 'translate-x-8' : 'translate-x-0 dark:translate-x-16'} inline-flex h-8 w-8 rounded-full transition-transform duration-300 motion-reduce:transform-none`}
   >
     <span
-      class="bg-secondary dark:bg-primary shadow-solid-sm h-full w-full rounded-full transition-colors duration-300"
+      class="bg-secondary dark:bg-primary shadow-solid-sm h-full w-full rounded-full shadow-black transition-colors duration-300"
     ></span>
   </div>
 </div>

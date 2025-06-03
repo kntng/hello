@@ -11,8 +11,8 @@
   --color-background: oklch(0.95 0.02 125);
   --color-foreground: oklch(0.35 0.02 270);
 
-  --shadow-solid: --spacing(1) --spacing(1);
-  --shadow-solid-sm: --spacing(0.5) --spacing(0.5);
+  --shadow-solid: --spacing(1) --spacing(1) var(--tw-shadow-color);
+  --shadow-solid-sm: --spacing(0.5) --spacing(0.5) var(--tw-shadow-color);
 }
 
 @layer components {
@@ -29,22 +29,32 @@
   }
 
   .link-button {
-    @apply bg-secondary z-20 dark:bg-primary flex items-center space-x-2 rounded-lg p-4 transition-colors duration-500 shadow-solid shadow-foreground;
+    @apply bg-secondary z-20 dark:bg-primary flex items-center space-x-2 rounded-lg p-4 transition-colors duration-500 shadow-solid shadow-black;
 
     &.animate {
       @apply hover:translate-x-1 hover:translate-y-1 hover:shadow-none;
     }
-  }
 
-  .link-button svg {
-    @apply h-8 w-8 flex-shrink-0;
-  }
+    svg {
+      @apply h-8 w-8 flex-shrink-0;
+    }
 
-  .link-button p {
-    @apply text-2xl font-bold;
+    p {
+      @apply text-2xl font-bold;
+    }
   }
 
   .text-glow {
     @apply text-shadow-foreground text-shadow-md;
   }
+}
+
+@utility color-text {
+  /* Set light/dark text and background colors */
+  @apply bg-background dark:bg-foreground text-foreground dark:text-background transition-colors duration-300 motion-reduce:transition-none;
+}
+
+@utility color-highlight {
+  /* Set light/dark highlight colors */
+  @apply selection:text-background selection:bg-secondary dark:selection:text-foreground dark:selection:bg-primary;
 }
