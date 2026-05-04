@@ -13,7 +13,7 @@
     "eslint-plugin-svelte": "^3.5.1",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.7.1",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "svelte": "^5.28.2",
     "svelte-check": "^4.1.6",
     "tailwind-scrollbar": "^4.0.2",
